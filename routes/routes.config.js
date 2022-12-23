@@ -3,13 +3,18 @@ const router = require('express').Router();
 const userController = require('../controllers/Users.controller');
 const projectController = require('../controllers/Projects.controller');
 const collaborationController = require('../controllers/Collaborators.controllers');
+const authMiddleware = require('../middleware/auth.middleware');
+const fileUploader = require('../config/cloudinary.config');
 
 router.get('/', (req, res, next) => {
   res.json({ ok: true });
 });
 
+// AUTH
+router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
+router.post('/register', fileUploader.single('image'), userController.createUser);
+
 // USERS
-router.post('/users', userController.createUser);
 router.get('/users', userController.listUsers);
 router.get('/users/:id', userController.detailUser);
 router.put('/users/update', userController.updateUser);

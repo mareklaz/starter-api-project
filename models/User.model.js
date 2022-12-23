@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: ['Frontend', 'Backend', 'Fullstack', 'UX/UI', 'Data Analyst'],
       required: [true, 'Es necesario elegir un perfil'],
-      defualt: 'Frontend',
+      default: 'Frontend',
     },
     about: {
       type: String,
@@ -37,6 +37,10 @@ const UserSchema = new mongoose.Schema(
     },
     linkedinLink: {
       type: String,
+    },
+    image: {
+      type: String,
+      default: 'https://cdn-icons-png.flaticon.com/512/2922/2922512.png',
     },
   },
   {

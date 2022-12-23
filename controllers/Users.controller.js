@@ -1,7 +1,12 @@
 const User = require('../models/User.model');
 
 module.exports.createUser = (req, res, next) => {
+  console.log('REQ.BODY', req.body);
+  if (req.file) {
+    req.body.image = req.file.path;
+  }
   const { email } = req.body;
+  console.log('REQ.BODY', req.body);
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
@@ -27,6 +32,21 @@ module.exports.createUser = (req, res, next) => {
         msg: 'Error al buscar USUARIO',
       });
     });
+};
+
+module.exports.getCurrentUser = (req, res, next) => {
+  User.findById(req.currentUser)
+    .then((user) => {
+      if (!user) {
+        console.log('No se ha encontrado al USUARIO');
+        return res.status(404).json({
+          msg: 'No se ha encontrado al USUARIO',
+        });
+      } else {
+        res.json(user);
+      }
+    })
+    .catch(next);
 };
 
 module.exports.listUsers = (req, res, next) => {
