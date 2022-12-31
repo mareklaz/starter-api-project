@@ -1,7 +1,12 @@
 const Project = require('../models/Project.model');
 
 module.exports.createProject = (req, res, next) => {
-  Project.create(req.body)
+  console.log(req.body);
+  if (req.file) {
+    req.body.image = req.file.path;
+  }
+
+  Project.create({ ...req.body, creatorId: '63a5b446365363399ee82990' })
     .then((project) => res.status(201).json(project))
     .catch((error) => {
       console.log('Error al crear el PROYECTO', error);

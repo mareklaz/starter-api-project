@@ -21,7 +21,7 @@ router.put('/users/update', userController.updateUser);
 router.delete('/users/delete', userController.deleteUser);
 
 // PROJECTS
-router.post('/projects', projectController.createProject);
+router.post('/projects', fileUploader.single('image'), projectController.createProject);
 router.get('/projects', projectController.listProjects);
 router.get('/projects/:id', projectController.detailProject);
 router.put('/projects/update', projectController.updateProject);

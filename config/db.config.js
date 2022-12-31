@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// mongoose.set('strictQuery', false);
 
 const DB_NAME = 'starter';
 const URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017';
