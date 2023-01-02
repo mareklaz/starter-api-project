@@ -6,7 +6,7 @@ module.exports.createProject = (req, res, next) => {
     req.body.image = req.file.path;
   }
 
-  Project.create({ ...req.body, creatorId: '63a5b446365363399ee82990' })
+  Project.create({ ...req.body, creatorId: req.currentUser.id })
     .then((project) => res.status(201).json(project))
     .catch((error) => {
       console.log('Error al crear el PROYECTO', error);
@@ -18,6 +18,7 @@ module.exports.createProject = (req, res, next) => {
 
 module.exports.listProjects = (req, res, next) => {
   Project.find()
+    .populate('creatorId')
     .then((projects) => {
       res.status(201).json(projects);
     })

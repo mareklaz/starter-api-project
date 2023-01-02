@@ -1,5 +1,6 @@
 const router = require('express').Router();
 
+const authController = require('../controllers/Auth.controller');
 const userController = require('../controllers/Users.controller');
 const projectController = require('../controllers/Projects.controller');
 const collaborationController = require('../controllers/Collaborators.controllers');
@@ -11,10 +12,18 @@ router.get('/', (req, res, next) => {
 });
 
 // AUTH
-router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
-router.post('/register', fileUploader.single('image'), userController.createUser);
+
+router
+  .post('/login', authController.login)
+  .get('/validation/:token', authController.validate)
+  .post('/restore-password', authController.restorePassword)
+  .get('/restore-password/:token', authController.checkToken)
+  .post('/restore-password/:token', authController.newPassword)
+  .post('/login', authController.login);
 
 // USERS
+router.post('/register', fileUploader.single('image'), userController.createUser);
+router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
 router.get('/users', userController.listUsers);
 router.get('/users/:id', userController.detailUser);
 router.put('/users/update', userController.updateUser);

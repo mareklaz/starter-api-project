@@ -1,4 +1,6 @@
 const User = require('../models/User.model');
+const generateID = require('../helpers/generateID');
+const { emailRegistration } = require('../helpers/email');
 
 module.exports.createUser = (req, res, next) => {
   console.log('REQ.BODY', req.body);
@@ -35,7 +37,8 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
-  User.findById(req.currentUser)
+  console.log('REQ-CURRENT USER', req.currentUser.id);
+  User.findById(req.currentUser.id)
     .then((user) => {
       if (!user) {
         console.log('No se ha encontrado al USUARIO');
