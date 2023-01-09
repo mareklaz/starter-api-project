@@ -12,14 +12,12 @@ router.get('/', (req, res, next) => {
 });
 
 // AUTH
-
-router
-  .post('/login', authController.login)
-  .get('/validation/:token', authController.validate)
-  .post('/restore-password', authController.restorePassword)
-  .get('/restore-password/:token', authController.checkToken)
-  .post('/restore-password/:token', authController.newPassword)
-  .post('/login', authController.login);
+router.post('/login', authController.login);
+router.get('/validation/:token', authController.validate);
+router.post('/restore-password', authController.restorePassword);
+router.get('/restore-password/:token', authController.checkToken);
+router.post('/restore-password/:token', authController.newPassword);
+router.post('/login', authController.login);
 
 // USERS
 router.post('/register', fileUploader.single('image'), userController.createUser);

@@ -14,7 +14,11 @@ module.exports.createUser = (req, res, next) => {
       if (!user) {
         console.log('El USUARIO no existe en la Base de Datos');
         User.create(req.body)
-          .then((user) => res.status(201).json(user))
+          .then((userCreated) => {
+            emailRegistration(userCreated);
+
+            res.status(201).json(userCreated);
+          })
           .catch((error) => {
             console.log('Error al crear el usuario', error);
             return res.status(404).json({
