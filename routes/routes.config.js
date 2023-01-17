@@ -4,6 +4,7 @@ const authController = require('../controllers/Auth.controller');
 const userController = require('../controllers/Users.controller');
 const projectController = require('../controllers/Projects.controller');
 const collaborationController = require('../controllers/Collaborators.controllers');
+const likeController = require('../controllers/Likes.controller');
 const authMiddleware = require('../middleware/auth.middleware');
 const fileUploader = require('../config/cloudinary.config');
 
@@ -40,5 +41,10 @@ router.delete('/collaborations/remove', collaborationController.removeCollaborat
 router.get('/collaborations', collaborationController.listCollaborations);
 router.get('/collaborations/user', collaborationController.detailCollaborationByUser);
 router.get('/collaborations/project', collaborationController.detailCollaborationByProject);
+
+// LIKES
+router.post('/likes/add', likeController.addLike);
+router.post('/likes/remove', likeController.removeLike);
+router.get('/likes/:id', likeController.getProjectsLikes);
 
 module.exports = router;

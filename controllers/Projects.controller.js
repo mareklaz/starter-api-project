@@ -5,8 +5,8 @@ module.exports.createProject = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.path;
   }
-
-  Project.create({ ...req.body, creatorId: req.currentUser.id })
+  // , creatorId: req.currentUser.id
+  Project.create({ ...req.body })
     .then((project) => res.status(201).json(project))
     .catch((error) => {
       console.log('Error al crear el PROYECTO', error);

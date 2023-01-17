@@ -7,6 +7,7 @@ module.exports.createUser = (req, res, next) => {
   if (req.file) {
     req.body.image = req.file.path;
   }
+  console.log('REQ.FILE', req.file);
   const { email } = req.body;
   console.log('REQ.BODY', req.body);
   User.findOne({ email: email })
@@ -15,7 +16,7 @@ module.exports.createUser = (req, res, next) => {
         console.log('El USUARIO no existe en la Base de Datos');
         User.create(req.body)
           .then((userCreated) => {
-            emailRegistration(userCreated);
+            // emailRegistration(userCreated);
 
             res.status(201).json(userCreated);
           })
