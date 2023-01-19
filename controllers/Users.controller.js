@@ -22,9 +22,10 @@ module.exports.createUser = (req, res, next) => {
           })
           .catch((error) => {
             console.log('Error al crear el usuario', error);
-            return res.status(404).json({
-              msg: error,
-            });
+            // return res.status(404).json({
+            //   msg: error,
+            // });
+            next(createError(200, 'User not found'));
           });
       } else {
         console.log('El USUARIO ya existe en la base de datos');
