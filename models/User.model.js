@@ -26,7 +26,6 @@ const UserSchema = new mongoose.Schema(
     profile: {
       type: String,
       enum: ['Frontend', 'Backend', 'Fullstack', 'UX/UI', 'Data Analyst'],
-      required: [true, 'Es necesario elegir un perfil'],
       default: 'Frontend',
     },
     about: {
@@ -41,6 +40,13 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
       default: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1064&q=80',
+    },
+    token: {
+      type: String,
+    },
+    active: {
+      type: Boolean,
+      default: false,
     },
   },
   {

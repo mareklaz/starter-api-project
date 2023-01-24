@@ -24,17 +24,17 @@ const ProjectSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Iniciado', 'En progreso', 'Pendiente', 'Finalizado'],
+      enum: ['Iniciado', 'En curso', 'Pendiente', 'Finalizado'],
       default: 'Iniciado',
+    },
+    projectType: {
+      type: String,
+      enum: ['Desarrollo Web', 'UX/UI', 'Data Analyst'],
     },
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: [true],
-    },
-    image: {
-      type: String,
-      default: 'https://images.unsplash.com/photo-1555680510-34daedadbdb1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
     },
   },
   {

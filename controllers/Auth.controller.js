@@ -1,5 +1,5 @@
 const User = require('../models/User.model');
-const generateJWT = require('../helpers/generateJWT');
+const jwt = require('jsonwebtoken');
 const generateID = require('../helpers/generateID');
 const { copy } = require('../routes/routes.config');
 const { emailRegister } = require('../helpers/email');
@@ -7,31 +7,33 @@ const { emailRegister } = require('../helpers/email');
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   console.log(password);
-  User.findOne({ email }) // Buscamos al usuario en la DB (por el email)
+  User.findOne({ email }) // Buscamos al usuario en la DB (por el email).
     .then((user) => {
-      // Confirmamos que el usuario existe
+      // Confirmamos que el usuario existe.
       if (!user) {
         const error = new Error('El usuario no existe');
         res.status(404).json({ msg: error.message });
       }
-      // Confirmamos si el usuario ha activado su cuenta
+      // Confirmamos si el usuario ha activado su cuenta.
       if (!user.active) {
         const error = new Error('Tu cuenta no ha sido confirmada');
         res.status(403).json({ msg: error.message });
       }
-      // Confirmamos si la contraseña del usuario es correcta o no
+      // Confirmamos si la contraseña del usuario es correcta o no.
       user.checkPassword(password).then((result) => {
-        if (result) {
-          console.log('Password Correcto');
-          const error = new Error('Contraseña correcta');
-          res.json({
-            ...user,
-            token: generateJWT(user.id),
-          });
+        if (!result) {
+          next(res.status(403).json({ msg: 'Email o contraseña incorrecta' })); // Contraseña incorrecta.
         } else {
-          console.log('Password Incorrecto');
-          const error = new Error('Contraseña incorrecta');
-          res.status(403).json({ msg: error.message });
+          const token = jwt.sign(
+            {
+              id: user.id,
+            },
+            process.env.JWT_SECRET,
+            {
+              expiresIn: '1h',
+            }
+          ); // Firmar y enviar el token jwt.
+          res.status(200).json({ accessToken: token });
         }
       });
     })

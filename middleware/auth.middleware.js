@@ -19,7 +19,6 @@ module.exports.isAuthenticated = (req, res, next) => {
           console.log(decodedToken);
           User.findById(decodedToken.id).then((user) => {
             req.currentUser = user;
-            console.log('Desde AUTH Middleware', req.currentUser);
             next();
           });
         }

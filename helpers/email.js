@@ -1,4 +1,4 @@
-const nodmailer = require('nodemailer');
+const nodemailer = require('nodemailer');
 
 module.exports.emailRegistration = async (data) => {
   console.log('DATA de Email Registration', data);
@@ -6,18 +6,18 @@ module.exports.emailRegistration = async (data) => {
   const { email, name } = data;
 
   const transport = nodemailer.createTransport({
-    host: process.env.MAILTRAP_HOST,
-    port: 465,
+    host: process.env.NODEMAILER_HOST,
+    port: NODEMAILER_PORT,
     auth: {
-      user: process.env.MAILTRAP_USER,
-      pass: process.env.MAILTRAP_PASS,
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS,
     },
   });
 
   // Información del EMAIL
 
   const info = await transport.sendMail({
-    from: '"Administrador de STARTER" <info@starter.com> ',
+    from: '"ADMINISTRADOR de STARTER" <admin@mareklaz.es> ',
     to: email,
     subject: 'STARTER, activa tu cuenta',
     text: 'Confirma la activación de tu cuenta en STARTER',
@@ -37,12 +37,12 @@ module.exports.emailRestorePassword = async (data) => {
   const { email, name, token } = data;
 
   const transport = nodmailer.createTransport({
-    host: process.env.MAILTRAP_HOST,
-    port: 465,
+    host: process.env.NODEMAILER_HOST,
+    port: NODEMAILER_PORT,
     secure: true,
     auth: {
-      user: process.env.MAILTRAP_USER,
-      pass: process.env.MAILTRAP_PASS,
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS,
     },
   });
 
@@ -57,7 +57,7 @@ module.exports.emailRestorePassword = async (data) => {
     <p>Hola ${name}, reastablece tu contraseña en STARTER</p>
     <p>Para restablecer tu con contraseña en STARTER debes acceder al siguiente enlace</p>
 
-    <p>Si no has solicitado activar tu usuario, puedes ignorar este correo.</p>
+    <p>Si no has solicitado activar tu usuario, ignora este correo.</p>
     `,
   });
 };

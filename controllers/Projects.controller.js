@@ -1,13 +1,23 @@
 const Project = require('../models/Project.model');
+const Collaboration = require('../models/Collaboration.model');
 
 module.exports.createProject = (req, res, next) => {
   console.log(req.body);
   if (req.file) {
     req.body.image = req.file.path;
   }
+
+  let projectId;
+
   // , creatorId: req.currentUser.id
-  Project.create({ ...req.body })
-    .then((project) => res.status(201).json(project))
+  Project.create({ ...req.body, creatorId: req.currentUser })
+    .then((project) => {
+      console.log(project);
+      req.body.projectProfiles.forEach((profile) => {
+        Collaboration.create({ projectId: project.id, collaboratorProfile: profile });
+      });
+      res.status(201).json(project);
+    })
     .catch((error) => {
       console.log('Error al crear el PROYECTO', error);
       return res.status(404).json({
@@ -16,7 +26,7 @@ module.exports.createProject = (req, res, next) => {
     });
 };
 
-module.exports.listProjects = (req, res, next) => {
+module.exports.getAllProjects = (req, res, next) => {
   Project.find()
     .populate('creatorId')
     .then((projects) => {

@@ -14,17 +14,13 @@ module.exports.createUser = (req, res, next) => {
     .then((user) => {
       if (!user) {
         console.log('El USUARIO no existe en la Base de Datos');
-        User.create(req.body)
+        User.create({ ...req.body, token: generateID() })
           .then((userCreated) => {
-            // emailRegistration(userCreated);
-
+            emailRegistration(userCreated);
             res.status(201).json(userCreated);
           })
           .catch((error) => {
             console.log('Error al crear el usuario', error);
-            // return res.status(404).json({
-            //   msg: error,
-            // });
             next(createError(200, 'User not found'));
           });
       } else {
@@ -43,7 +39,6 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
-  console.log('REQ-CURRENT USER', req.currentUser.id);
   User.findById(req.currentUser.id)
     .then((user) => {
       if (!user) {

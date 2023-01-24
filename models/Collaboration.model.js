@@ -5,12 +5,15 @@ const CollaborationSchema = new mongoose.Schema(
     collaboratorId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: [true],
     },
     projectId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Project',
       required: [true],
+    },
+    collaboratorProfile: {
+      type: String,
+      enum: ['Frontend', 'Backend', 'Fullstack', 'UX/UI', 'Data Analyst'],
     },
   },
   {

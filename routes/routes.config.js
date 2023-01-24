@@ -14,7 +14,10 @@ router.get('/', (req, res, next) => {
 
 // AUTH
 router.post('/login', authController.login);
-router.get('/validation/:token', authController.validate);
+router.get('/activation/:token', authController.validate);
+router.post('/auth', authController.restorePassword);
+router.get('/auth/:token', authController.checkToken);
+router.post('/auth/:token', authController.newPassword);
 router.post('/restore-password', authController.restorePassword);
 router.get('/restore-password/:token', authController.checkToken);
 router.post('/restore-password/:token', authController.newPassword);
@@ -29,18 +32,18 @@ router.put('/users/update', userController.updateUser);
 router.delete('/users/delete', userController.deleteUser);
 
 // PROJECTS
-router.post('/projects', fileUploader.single('image'), projectController.createProject);
-router.get('/projects', projectController.listProjects);
+router.post('/projects', authMiddleware.isAuthenticated, fileUploader.single('image'), projectController.createProject);
+router.get('/projects', authMiddleware.isAuthenticated, projectController.getAllProjects);
 router.get('/projects/:id', projectController.detailProject);
 router.put('/projects/update', projectController.updateProject);
 router.delete('/projects/delete', projectController.deleteProject);
 
 // COLABORATION
 router.post('/collaborations/add', collaborationController.addCollaborator);
+router.get('/collaborations/project/:id', collaborationController.getProjectCollaborators);
+// router.get('/collaborations', collaborationController.listCollaborations);
 router.delete('/collaborations/remove', collaborationController.removeCollaborator);
-router.get('/collaborations', collaborationController.listCollaborations);
 router.get('/collaborations/user', collaborationController.detailCollaborationByUser);
-router.get('/collaborations/project', collaborationController.detailCollaborationByProject);
 
 // LIKES
 router.post('/likes/add', likeController.addLike);
