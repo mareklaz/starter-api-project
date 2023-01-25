@@ -3,14 +3,20 @@ const nodemailer = require('nodemailer');
 module.exports.emailRegistration = async (data) => {
   console.log('DATA de Email Registration', data);
 
-  const { email, name } = data;
+  const { email, name, token } = data;
 
   const transport = nodemailer.createTransport({
+    pool: true,
     host: process.env.NODEMAILER_HOST,
-    port: NODEMAILER_PORT,
+    port: process.env.NODEMAILER_PORT,
+    secure: true, // use TLS
     auth: {
       user: process.env.NODEMAILER_USER,
       pass: process.env.NODEMAILER_PASS,
+    },
+    tls: {
+      // do not fail on invalid certs
+      rejectUnauthorized: false,
     },
   });
 
@@ -34,15 +40,20 @@ module.exports.emailRegistration = async (data) => {
 module.exports.emailRestorePassword = async (data) => {
   console.log('DATA de Email Registration', data);
 
-  const { email, name, token } = data;
+  const { email, name } = data;
 
-  const transport = nodmailer.createTransport({
+  const transport = nodemailer.createTransport({
+    pool: true,
     host: process.env.NODEMAILER_HOST,
-    port: NODEMAILER_PORT,
-    secure: true,
+    port: process.env.NODEMAILER_PORT,
+    secure: true, // use TLS
     auth: {
       user: process.env.NODEMAILER_USER,
       pass: process.env.NODEMAILER_PASS,
+    },
+    tls: {
+      // do not fail on invalid certs
+      rejectUnauthorized: false,
     },
   });
 
