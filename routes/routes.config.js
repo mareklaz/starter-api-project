@@ -27,7 +27,7 @@ router.post('/login', authController.login);
 router.post('/register', fileUploader.single('image'), userController.createUser);
 router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
 router.get('/users', authMiddleware.isAuthenticated, userController.listUsers);
-router.get('/users/:id', authMiddleware.isAuthenticated, userController.detailUser);
+router.get('/users/:id', authMiddleware.isAuthenticated, userController.getUserDetail);
 router.put('/users/update', authMiddleware.isAuthenticated, userController.updateUser);
 router.delete('/users/delete', authMiddleware.isAuthenticated, userController.deleteUser);
 

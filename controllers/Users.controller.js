@@ -66,7 +66,7 @@ module.exports.listUsers = (req, res, next) => {
     });
 };
 
-module.exports.detailUser = (req, res, next) => {
+module.exports.getUserDetail = (req, res, next) => {
   const { id } = req.params;
   User.findById(id)
     .then((user) => {
