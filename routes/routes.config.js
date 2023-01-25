@@ -26,17 +26,18 @@ router.post('/login', authController.login);
 // USERS
 router.post('/register', fileUploader.single('image'), userController.createUser);
 router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
-router.get('/users', userController.listUsers);
-router.get('/users/:id', userController.detailUser);
-router.put('/users/update', userController.updateUser);
-router.delete('/users/delete', userController.deleteUser);
+router.get('/users', authMiddleware.isAuthenticated, userController.listUsers);
+router.get('/users/:id', authMiddleware.isAuthenticated, userController.detailUser);
+router.put('/users/update', authMiddleware.isAuthenticated, userController.updateUser);
+router.delete('/users/delete', authMiddleware.isAuthenticated, userController.deleteUser);
 
 // PROJECTS
 router.post('/projects', authMiddleware.isAuthenticated, fileUploader.single('image'), projectController.createProject);
 router.get('/projects', authMiddleware.isAuthenticated, projectController.getAllProjects);
-router.get('/projects/:id', projectController.detailProject);
-router.put('/projects/update', projectController.updateProject);
-router.delete('/projects/delete', projectController.deleteProject);
+router.get('/projects/:id', authMiddleware.isAuthenticated, projectController.getProjectDetail);
+router.get('/getProjectType/:type', authMiddleware.isAuthenticated, projectController.getProjectType);
+router.put('/projects/update', authMiddleware.isAuthenticated, projectController.updateProject);
+router.delete('/projects/delete', authMiddleware.isAuthenticated, projectController.deleteProject);
 
 // COLABORATION
 router.post('/collaborations/add', collaborationController.addCollaborator);

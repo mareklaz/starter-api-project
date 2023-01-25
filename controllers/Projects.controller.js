@@ -40,11 +40,25 @@ module.exports.getAllProjects = (req, res, next) => {
     });
 };
 
-module.exports.detailProject = (req, res, next) => {
+module.exports.getProjectDetail = (req, res, next) => {
   const { id } = req.params;
   Project.findById(id)
     .then((project) => {
       res.status(201).json(project);
+    })
+    .catch((error) => {
+      console.log('Error', error);
+      res.status(404).json({
+        msg: 'Error al buscar PROYECTO',
+      });
+    });
+};
+
+module.exports.getProjectType = (req, res, next) => {
+  const { type } = req.params;
+  Project.find({ projectType: type })
+    .then((projects) => {
+      res.status(201).json(projects);
     })
     .catch((error) => {
       console.log('Error', error);
