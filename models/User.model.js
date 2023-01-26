@@ -28,8 +28,11 @@ const UserSchema = new mongoose.Schema(
       enum: ['Frontend', 'Backend', 'Fullstack', 'UX/UI', 'Data Analyst'],
       default: 'Frontend',
     },
-    about: {
+    description: {
       type: String,
+    },
+    skills: {
+      type: [String],
     },
     githubLink: {
       type: String,
@@ -56,6 +59,9 @@ const UserSchema = new mongoose.Schema(
       transform: (doc, ret) => {
         delete ret.__v;
         delete ret._id;
+        // delete ret.password;
+        // delete ret.token;
+        // delete ret.active;
         return ret;
       },
     },
