@@ -6,41 +6,35 @@ const { emailRegister } = require('../helpers/email');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-  console.log(password);
-  User.findOne({ email }) // Buscamos al usuario en la DB (por el email).
-    .then((user) => {
-      // Confirmamos que el usuario existe.
+
+  if (!email || !password) {
+    next(res.status(403).json({ msg: 'Email o contraseña incorrecta' }));
+  } else {
+    User.findOne({ email }).then((user) => {
       if (!user) {
-        const error = new Error('El usuario no existe');
-        res.status(404).json({ msg: error.message });
+        next(res.status(403).json({ msg: 'Email o contraseña incorrecta' }));
+      } else if (!user.active) {
+        next(res.status(403).json({ msg: 'El usuario no está activo' }));
+      } else {
+        user.checkPassword(password).then((result) => {
+          if (!result) {
+            next(res.status(403).json({ msg: 'Email o contraseña incorrecta' }));
+          } else {
+            const token = jwt.sign(
+              {
+                id: user.id,
+              },
+              process.env.JWT_SECRET,
+              {
+                expiresIn: '7d',
+              }
+            );
+            res.json({ accessToken: token });
+          }
+        });
       }
-      // Confirmamos si el usuario ha activado su cuenta.
-      if (!user.active) {
-        const error = new Error('Tu cuenta no ha sido confirmada');
-        res.status(403).json({ msg: error.message });
-      }
-      // Confirmamos si la contraseña del usuario es correcta o no.
-      user.checkPassword(password).then((result) => {
-        if (!result) {
-          next(res.status(403).json({ msg: 'Email o contraseña incorrecta' })); // Contraseña incorrecta.
-        } else {
-          const token = jwt.sign(
-            {
-              id: user.id,
-            },
-            process.env.JWT_SECRET,
-            {
-              expiresIn: '1h',
-            }
-          ); // Firmar y enviar el token jwt.
-          res.status(200).json({ accessToken: token });
-        }
-      });
-    })
-    .catch((error) => {
-      console.log('Error en la busqueda del usuario', error.message);
-      res.status(404).json(error);
     });
+  }
 };
 
 module.exports.validate = (req, res, next) => {

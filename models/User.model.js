@@ -32,7 +32,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     skills: {
-      type: [String],
+      type: [
+        {
+          skillId: String,
+          skillName: String,
+        },
+      ],
     },
     githubLink: {
       type: String,

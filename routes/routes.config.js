@@ -3,7 +3,7 @@ const router = require('express').Router();
 const authController = require('../controllers/Auth.controller');
 const userController = require('../controllers/Users.controller');
 const projectController = require('../controllers/Projects.controller');
-const collaborationController = require('../controllers/Collaborators.controllers');
+const collaborationController = require('../controllers/Collaborators.controller');
 const likeController = require('../controllers/Likes.controller');
 const authMiddleware = require('../middleware/auth.middleware');
 const fileUploader = require('../config/cloudinary.config');
@@ -35,7 +35,7 @@ router.delete('/users/delete', authMiddleware.isAuthenticated, userController.de
 router.post('/projects', authMiddleware.isAuthenticated, fileUploader.single('image'), projectController.createProject);
 router.get('/projects', authMiddleware.isAuthenticated, projectController.getAllProjects);
 router.get('/projects/:id', authMiddleware.isAuthenticated, projectController.getProjectDetail);
-router.get('/getProjectType/:type', authMiddleware.isAuthenticated, projectController.getProjectType);
+router.get('/projects/type/:type', authMiddleware.isAuthenticated, projectController.getProjectType);
 router.put('/projects/update', authMiddleware.isAuthenticated, projectController.updateProject);
 router.delete('/projects/delete', authMiddleware.isAuthenticated, projectController.deleteProject);
 
