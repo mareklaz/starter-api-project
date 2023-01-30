@@ -14,17 +14,9 @@ router.get('/', (req, res, next) => {
 
 // AUTH
 router.post('/login', authController.login);
-router.get('/activation/:token', authController.validate);
-router.post('/auth', authController.restorePassword);
-router.get('/auth/:token', authController.checkToken);
-router.post('/auth/:token', authController.newPassword);
-router.post('/restore-password', authController.restorePassword);
-router.get('/restore-password/:token', authController.checkToken);
-router.post('/restore-password/:token', authController.newPassword);
-router.post('/login', authController.login);
 
 // USERS
-router.post('/register', fileUploader.single('image'), userController.createUser);
+router.post('/register', userController.createUser);
 router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
 router.get('/users', authMiddleware.isAuthenticated, userController.listUsers);
 router.get('/users/:id', authMiddleware.isAuthenticated, userController.getUserDetail);

@@ -2,19 +2,15 @@ const Project = require('../models/Project.model');
 const Collaboration = require('../models/Collaboration.model');
 
 module.exports.createProject = (req, res, next) => {
-  console.log(req.body);
-  if (req.file) {
-    req.body.image = req.file.path;
-  }
-
-  let projectId;
+  const { profiles } = req.body;
 
   // , creatorId: req.currentUser.id
   Project.create({ ...req.body, creatorId: req.currentUser })
     .then((project) => {
       console.log(project);
-      req.body.projectProfiles.forEach((profile) => {
-        Collaboration.create({ projectId: project.id, collaboratorProfile: profile });
+
+      profiles.forEach((profile) => {
+        Collaboration.create({ projectId: project._id, collaboratorProfile: profile.profileName });
       });
       res.status(201).json(project);
     })

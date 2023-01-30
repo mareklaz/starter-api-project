@@ -1,22 +1,14 @@
 const User = require('../models/User.model');
-const generateID = require('../helpers/generateID');
-const { emailRegistration } = require('../helpers/email');
 
 module.exports.createUser = (req, res, next) => {
-  console.log('REQ.BODY', req.body);
-  if (req.file) {
-    req.body.image = req.file.path;
-  }
-  console.log('REQ.FILE', req.file);
   const { email } = req.body;
-  console.log('REQ.BODY', req.body);
+
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
         console.log('El USUARIO no existe en la Base de Datos');
-        User.create({ ...req.body, token: generateID() })
+        User.create({ ...req.body })
           .then((userCreated) => {
-            emailRegistration(userCreated);
             res.status(201).json(userCreated);
           })
           .catch((error) => {
