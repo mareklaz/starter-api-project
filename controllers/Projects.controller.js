@@ -51,8 +51,9 @@ module.exports.getProjectDetail = (req, res, next) => {
 };
 
 module.exports.getProjectType = (req, res, next) => {
-  const { type } = req.params;
-  Project.find({ projectType: type })
+  const { type } = req.body;
+  +Project.find({ projectType: type })
+    .populate('creatorId')
     .then((projects) => {
       res.status(201).json(projects);
     })

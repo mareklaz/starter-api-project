@@ -2,7 +2,6 @@ const Collaboration = require('../models/Collaboration.model');
 
 module.exports.addCollaborator = (req, res, next) => {
   const { collaboratorId, projectId } = req.body;
-
   Collaboration.findOne({ collaboratorId: collaboratorId, projectId: projectId })
     .then((collaboration) => {
       if (!collaboration) {

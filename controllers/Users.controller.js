@@ -62,7 +62,7 @@ module.exports.getUserDetail = (req, res, next) => {
   const { id } = req.params;
   User.findById(id)
     .then((user) => {
-      res.status(201).json(user);
+      res.status(200).json(user);
     })
     .catch((error) => {
       console.log('Error', error);
