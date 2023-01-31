@@ -45,7 +45,7 @@ module.exports.getCurrentUser = (req, res, next) => {
     .catch(next);
 };
 
-module.exports.listUsers = (req, res, next) => {
+module.exports.getAllUsers = (req, res, next) => {
   User.find()
     .then((users) => {
       res.status(201).json(users);

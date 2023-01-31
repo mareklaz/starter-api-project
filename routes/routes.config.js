@@ -18,7 +18,7 @@ router.post('/login', authController.login);
 // USERS
 router.post('/register', userController.createUser);
 router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
-router.get('/users', authMiddleware.isAuthenticated, userController.listUsers);
+router.get('/users', authMiddleware.isAuthenticated, userController.getAllUsers);
 router.get('/users/:id', authMiddleware.isAuthenticated, userController.getUserDetail);
 router.put('/users/update', authMiddleware.isAuthenticated, userController.updateUser);
 router.delete('/users/delete', authMiddleware.isAuthenticated, userController.deleteUser);

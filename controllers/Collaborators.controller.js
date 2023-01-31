@@ -1,5 +1,21 @@
 const Collaboration = require('../models/Collaboration.model');
 
+module.exports.getProjectCollaborators = (req, res, next) => {
+  const { projectId } = req.params;
+
+  Collaboration.find({ projectId: projectId })
+    .populate('collaboratorId')
+    .populate('projectId')
+    .then((collaborations) => {
+      res.status(201).json(collaborations);
+    })
+    .catch((error) => {
+      res.status(404).json({
+        msg: error,
+      });
+    });
+};
+
 module.exports.addCollaborator = (req, res, next) => {
   const { collaboratorId, projectId } = req.body;
   Collaboration.findOne({ collaboratorId: collaboratorId, projectId: projectId })
@@ -28,20 +44,20 @@ module.exports.addCollaborator = (req, res, next) => {
     });
 };
 
-module.exports.listCollaborations = (req, res, next) => {
-  // Collaboration.find()
-  //   .populate('collaboratorId')
-  //   .populate('projectId')
-  //   .then((collaboration) => {
-  //     res.status(201).json(collaboration);
-  //   })
-  //   .catch((error) => {
-  //     console.log('Error', error);
-  //     res.status(404).json({
-  //       msg: 'Error al buscar COLABORACIONES',
-  //     });
-  //   });
-};
+// module.exports.listCollaborations = (req, res, next) => {
+//   // Collaboration.find()
+//   //   .populate('collaboratorId')
+//   //   .populate('projectId')
+//   //   .then((collaboration) => {
+//   //     res.status(201).json(collaboration);
+//   //   })
+//   //   .catch((error) => {
+//   //     console.log('Error', error);
+//   //     res.status(404).json({
+//   //       msg: 'Error al buscar COLABORACIONES',
+//   //     });
+//   //   });
+// };
 
 module.exports.removeCollaborator = (req, res, next) => {
   const { collaboratorId, projectId } = req.body;
