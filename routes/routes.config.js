@@ -18,29 +18,30 @@ router.post('/login', authController.login);
 // USERS
 router.post('/register', userController.createUser);
 router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
-router.get('/users', authMiddleware.isAuthenticated, userController.getAllUsers);
+router.get('/users', userController.getAllUsers);
 router.get('/users/:id', authMiddleware.isAuthenticated, userController.getUserDetail);
 router.put('/users/update', authMiddleware.isAuthenticated, userController.updateUser);
 router.delete('/users/delete', authMiddleware.isAuthenticated, userController.deleteUser);
 
 // PROJECTS
 router.post('/projects', authMiddleware.isAuthenticated, fileUploader.single('image'), projectController.createProject);
-router.get('/projects', authMiddleware.isAuthenticated, projectController.getAllProjects);
+router.get('/projects', projectController.getAllProjects);
 router.get('/projects/:id', authMiddleware.isAuthenticated, projectController.getProjectDetail);
 router.get('/projects/type/:type', authMiddleware.isAuthenticated, projectController.getProjectType);
 router.put('/projects/update', authMiddleware.isAuthenticated, projectController.updateProject);
 router.delete('/projects/delete', authMiddleware.isAuthenticated, projectController.deleteProject);
 
 // COLABORATION
-router.post('/collaborations/add', collaborationController.addCollaborator);
+router.post('/collaborations/add', collaborationController.collaborationUser);
+// router.get('/collaborations/', collaborationController.getAllCollabarations);
 router.get('/collaborations/project/:id', collaborationController.getProjectCollaborators);
 // router.get('/collaborations', collaborationController.listCollaborations);
 router.delete('/collaborations/remove', collaborationController.removeCollaborator);
 router.get('/collaborations/user', collaborationController.detailCollaborationByUser);
 
 // LIKES
-router.post('/likes/add', likeController.addLike);
-router.post('/likes/remove', likeController.removeLike);
-router.get('/likes/:id', likeController.getProjectsLikes);
+router.post('/like', authMiddleware.isAuthenticated, likeController.like);
+router.get('/like/:id', authMiddleware.isAuthenticated, likeController.getCurrentUserLikesInProject);
+router.get('/projects/like/:id', authMiddleware.isAuthenticated, likeController.getProjectLikes);
 
 module.exports = router;

@@ -1,76 +1,66 @@
-const Likes = require('../models/Like.model');
+const Like = require('../models/Like.model');
 const Project = require('../models/Project.model');
 
-module.exports.addLike = (req, res, next) => {
+module.exports.like = (req, res, next) => {
   const { userId, projectId } = req.body;
 
   Project.findById(projectId)
     .then((project) => {
-      Likes.findOne({ userId: userId, projectId: project.id })
+      Like.findOne({ userId: req.currentUser, projectId: project.id })
         .then((likes) => {
           if (!likes) {
-            Likes.create(req.body)
+            Like.create({ userId: req.currentUser, projectId: projectId })
               .then((like) => {
-                res.status(200).json({ like });
+                res.status(200).json({ status: true });
               })
               .catch((error) => {
-                console.log('Error', error);
-                res.status(404).json({
-                  msg: 'Error al crear LIKE',
-                });
+                res.status(200).json(error);
               });
           } else {
-            res.status(404).json({
-              msg: 'El LIKE ya existe',
-            });
+            likes.delete().then(res.status(200).json({ status: false }));
           }
         })
         .catch((error) => {
-          console.log('Error', error);
           res.status(404).json({
             msg: 'Error al buscar LIKES',
           });
         });
     })
     .catch((error) => {
-      console.log('Error', error);
       res.status(404).json({
         msg: 'El PROYECTO no existe',
       });
     });
 };
 
-module.exports.removeLike = (req, res, next) => {
-  const { userId, projectId } = req.body;
-  Project.findById(projectId)
-    .then((project) => {
-      console.log('PROJECT encontrado', project);
-      Likes.findOneAndDelete({ userId: userId, projectId: project.id })
-        .then(() => {
-          res.status(200).json({ msg: 'Like eliminado correctamente' });
-        })
-        .catch((error) => {
-          console.log(error);
-          res.status(404).json({ msg: 'Fallo al eliminar el like' });
-        });
-    })
-    .catch((error) => {
-      console.log('Error', error);
-      res.status(404).json({
-        msg: 'El PROYECTO no existe',
-      });
-    });
-};
-
-module.exports.getProjectsLikes = (req, res, next) => {
+module.exports.getCurrentUserLikesInProject = (req, res, next) => {
   const { id } = req.params;
 
-  Likes.find({ projectId: id })
-    .then((likes) => {
-      res.status(200).json(likes);
+  Like.findOne({ userId: req.currentUser, projectId: id })
+    .then((like) => {
+      if (like) {
+        res.status(200).json(like);
+      } else {
+        res.status(404).json({ msg: 'No se ha encontrado Like' });
+      }
     })
     .catch((error) => {
-      console.log(error);
-      res.status(200).json({ msg: 'Fallo al buscar el like' });
+      res.status(404).json({ msg: 'No se ha encontrado Like' });
+    });
+};
+
+module.exports.getProjectLikes = (req, res, next) => {
+  const { id } = req.params;
+
+  Like.find({ projectId: id })
+    .then((like) => {
+      if (like) {
+        res.status(200).json(like);
+      } else {
+        res.status(404).json({ msg: 'No se ha encontrado Like' });
+      }
+    })
+    .catch((error) => {
+      res.status(404).json({ msg: 'No se ha encontrado Like' });
     });
 };

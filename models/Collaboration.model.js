@@ -11,9 +11,8 @@ const CollaborationSchema = new mongoose.Schema(
       ref: 'Project',
       required: [true],
     },
-    collaboratorProfile: {
+    profileName: {
       type: String,
-      enum: ['Frontend', 'Backend', 'Fullstack', 'UX/UI', 'Data Analyst'],
     },
   },
   {

@@ -16,8 +16,53 @@ module.exports.getProjectCollaborators = (req, res, next) => {
     });
 };
 
+module.exports.collaborationUser = (req, res, next) => {
+  const { collaborationId, projectId } = req.body;
+
+  const marek = '63d8fd4a0be2bab6602c5649';
+
+  Collaboration.findById(collaborationId)
+    .then((collaboration) => {
+      if (!collaboration.collaboratorId) {
+        collaboration
+          .update({ collaboratorId: marek }, { new: true })
+          .then((colaborationUpdated) => res.status(201).json(colaborationUpdated))
+          .catch((error) => console.log('error'));
+      } else {
+        collaboration
+          .update({ collaboratorId: null }, { new: true })
+          .then((colaborationUpdated) => res.status(201).json())
+          .catch((error) => console.log('error'));
+      }
+      // Like.findOne({ userId: req.currentUser, projectId: project.id })
+      //   .then((likes) => {
+      //     if (!likes) {
+      //       Like.create({ userId: req.currentUser, projectId: projectId })
+      //         .then((like) => {
+      //           res.status(200).json({ status: true });
+      //         })
+      //         .catch((error) => {
+      //           res.status(200).json(error);
+      //         });
+      //     } else {
+      //       likes.delete().then(res.status(200).json({ status: false }));
+      //     }
+      //   })
+      //   .catch((error) => {
+      //     res.status(404).json({
+      //       msg: 'Error al buscar LIKES',
+      //     });
+      //   });
+    })
+    .catch((error) => {
+      res.status(404).json({
+        msg: 'Error al buscar el Colaborador',
+      });
+    });
+};
+
 module.exports.addCollaborator = (req, res, next) => {
-  const { collaboratorId, projectId } = req.body;
+  const { collaboratorId, projectId, profile } = req.body;
   Collaboration.findOne({ collaboratorId: collaboratorId, projectId: projectId })
     .then((collaboration) => {
       if (!collaboration) {

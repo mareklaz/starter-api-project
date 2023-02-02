@@ -10,7 +10,7 @@ module.exports.createProject = (req, res, next) => {
       console.log(project);
 
       profiles.forEach((profile) => {
-        Collaboration.create({ projectId: project._id, collaboratorProfile: profile.profileName });
+        Collaboration.create({ projectId: project._id, profileName: profile.profileName, profileId: profile.profileId });
       });
       res.status(201).json(project);
     })
@@ -39,6 +39,7 @@ module.exports.getAllProjects = (req, res, next) => {
 module.exports.getProjectDetail = (req, res, next) => {
   const { id } = req.params;
   Project.findById(id)
+    .populate('creatorId')
     .then((project) => {
       res.status(201).json(project);
     })
