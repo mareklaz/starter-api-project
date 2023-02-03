@@ -32,11 +32,8 @@ router.put('/projects/update', authMiddleware.isAuthenticated, projectController
 router.delete('/projects/delete', authMiddleware.isAuthenticated, projectController.deleteProject);
 
 // COLABORATION
-router.post('/collaborations/add', collaborationController.collaborationUser);
-// router.get('/collaborations/', collaborationController.getAllCollabarations);
+router.post('/collaborations/add', authMiddleware.isAuthenticated, collaborationController.collaborationUser);
 router.get('/collaborations/project/:id', collaborationController.getProjectCollaborators);
-// router.get('/collaborations', collaborationController.listCollaborations);
-router.delete('/collaborations/remove', collaborationController.removeCollaborator);
 router.get('/collaborations/user', collaborationController.detailCollaborationByUser);
 
 // LIKES
