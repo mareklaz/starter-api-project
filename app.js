@@ -1,4 +1,6 @@
 require('dotenv').config();
+const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 const createError = require('http-errors');
 
@@ -56,6 +58,7 @@ app.use((error, req, res, next) => {
 });
 
 /* App listen port */
+
 app.listen(process.env.PORT || 3001, () => {
   console.log('App in process at', process.env.PORT || 3001);
 });
