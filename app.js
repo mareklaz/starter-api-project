@@ -12,11 +12,16 @@ require('./config/db.config');
 const routes = require('./routes/routes.config');
 
 const app = express();
-app.use(cors());
+
 app.use(logger('dev'));
 
-app.use(express.json()); // Nos permite usar el req.body
-app.use('/api', routes);
+const corsOptions = {
+  origin: ['http://localhost:3001', 'https://starter-app-project-production.up.railway.app/'],
+};
+app.use(cors());
+
+app.use(express.json());
+app.use('/api', cors(corsOptions), routes);
 
 // Handle Errors
 
