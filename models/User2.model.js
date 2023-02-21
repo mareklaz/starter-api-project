@@ -9,12 +9,7 @@ const UserSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-    },
-    username: {
-      type: String,
       required: [true, 'Es necesario introducir un nombre de usuario'],
-      minlength: 3,
-      maxlength: 100,
     },
     email: {
       type: String,
@@ -26,8 +21,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Es necesario introducir un password'],
       match: [PASSWORD_PATTERN, 'Es necesario introducir un password válido'],
-      minlength: 6,
-      maxlength: 25,
+      minlength: 3,
     },
     profile: {
       type: String,
@@ -39,13 +33,10 @@ const UserSchema = new mongoose.Schema(
     skills: {
       type: [{ skillName: String, skillId: String }],
     },
-    linkedinURL: {
+    githubLink: {
       type: String,
     },
-    githubURL: {
-      type: String,
-    },
-    webURL: {
+    linkedinLink: {
       type: String,
     },
   },

@@ -20,11 +20,11 @@ router.post('/register', userController.createUser);
 router.get('/users/me', authMiddleware.isAuthenticated, userController.getCurrentUser);
 router.get('/users', userController.getAllUsers);
 router.get('/users/:id', authMiddleware.isAuthenticated, userController.getUserDetail);
-router.put('/users/update', authMiddleware.isAuthenticated, userController.updateUser);
+router.patch('/users/update', authMiddleware.isAuthenticated, userController.updateUser);
 router.delete('/users/delete', authMiddleware.isAuthenticated, userController.deleteUser);
 
 // PROJECTS
-router.post('/projects', authMiddleware.isAuthenticated, fileUploader.single('image'), projectController.createProject);
+router.post('/projects', authMiddleware.isAuthenticated, projectController.createProject);
 router.get('/projects', projectController.getAllProjects);
 router.get('/projects/:id', authMiddleware.isAuthenticated, projectController.getProjectDetail);
 router.get('/projects/type/:type', authMiddleware.isAuthenticated, projectController.getProjectType);

@@ -19,8 +19,6 @@ module.exports.getProjectCollaborators = (req, res, next) => {
 module.exports.collaborationUser = (req, res, next) => {
   const { collaborationId, projectId } = req.body;
 
-  const marek = '63d8fd4a0be2bab6602c5649';
-
   Collaboration.findById(collaborationId)
     .then((collaboration) => {
       if (collaboration.collaboratorId === req.currentUser || !collaboration.collaboratorId) {

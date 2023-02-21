@@ -2,16 +2,12 @@ const Project = require('../models/Project.model');
 const Collaboration = require('../models/Collaboration.model');
 
 module.exports.createProject = (req, res, next) => {
-  const { profiles } = req.body;
-
-  // , creatorId: req.currentUser.id
   Project.create({ ...req.body, creatorId: req.currentUser })
     .then((project) => {
       console.log(project);
-
-      profiles.forEach((profile) => {
-        Collaboration.create({ projectId: project._id, profileName: profile.profileName, profileId: profile.profileId });
-      });
+      // profiles.forEach((profile) => {
+      //   Collaboration.create({ projectId: project._id, profileName: profile.profileName, profileId: profile.profileId });
+      // });
       res.status(201).json(project);
     })
     .catch((error) => {
@@ -53,7 +49,7 @@ module.exports.getProjectDetail = (req, res, next) => {
 
 module.exports.getProjectType = (req, res, next) => {
   const { type } = req.body;
-  +Project.find({ projectType: type })
+  Project.find({ projectType: type })
     .populate('creatorId')
     .then((projects) => {
       res.status(201).json(projects);

@@ -16,20 +16,22 @@ const ProjectSchema = new mongoose.Schema(
     },
     endDate: {
       type: Date,
-      // required: [true, 'Es necesario introducir una fecha de finalización del PROYECTO'],
     },
     github: {
       type: String,
       default: 'https://github.com/',
     },
     status: {
-      type: String,
-      enum: ['Iniciado', 'En curso', 'Pendiente', 'Finalizado'],
-      default: 'Iniciado',
+      type: Number,
+      enum: [0, 1, 2, 3],
+      default: 0,
     },
-    projectType: {
+    type: {
       type: String,
-      enum: ['Desarrollo Web', 'UX/UI', 'Data Analyst'],
+      enum: ['Web', 'UXUI', 'Data'],
+    },
+    tags: {
+      type: [{ id: String, tag: String }],
     },
     creatorId: {
       type: mongoose.Schema.Types.ObjectId,
